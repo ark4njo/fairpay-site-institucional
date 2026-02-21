@@ -79,6 +79,14 @@ export default function HomePage() {
             title="TikTok (conteúdo em destaque)"
             subtitle="Vídeo em destaque do @fairpaymobile."
           />
+           {/* Pinterest */}
+          <PinterestEmbed
+  pinId={pinterestPinId}
+  pinUrl={pinterestPinUrl}
+  title="Pinterest (pin em destaque)"
+  subtitle="Coleção visual — FairPay Mobile | Jingle 2026."
+  size="medium"
+/>
         </div>
 
         {/* Coluna direita - CTA institucional */}
