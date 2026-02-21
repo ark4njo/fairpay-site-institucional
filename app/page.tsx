@@ -15,6 +15,8 @@ export default function HomePage() {
   const instagramPostUrl = "https://www.instagram.com/fairpaymobile/"; // TROCAR PELO LINK DO VÍDEO
   const facebookPostUrl = "https://www.facebook.com/share/1AZm6qlibu"; // TROCAR PELO LINK DO VÍDEO
   const youtubeChannelUrl = "https://www.youtube.com/@fairpaymobile";
+  const pinterestPinId = "1137088605936429474";
+  const pinterestPinUrl = "https://br.pinterest.com/pin/1137088605936429474/";
   // =========================
 
   return (
