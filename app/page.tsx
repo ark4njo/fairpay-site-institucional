@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PinterestEmbed from "@/components/PinterestEmbed";
 import TikTokEmbed from "@/components/TikTokEmbed";
 
 export default function HomePage() {
