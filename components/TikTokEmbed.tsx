@@ -1,20 +1,26 @@
 "use client";
 
-import Script from "next/script";
+import Link from "next/link";
 
 type TikTokEmbedProps = {
-  url: string; 
+  /** URL do vídeo do TikTok (qualquer formato) */
+  url: string;
   title?: string;
   subtitle?: string;
-  maxWidth?: number;
 };
+
+function extractTikTokVideoId(url: string): string | null {
+  const m = url.match(/\/video\/(\d+)/i);
+  return m?.[1] ?? null;
+}
 
 export default function TikTokEmbed({
   url,
   title = "TikTok",
-  subtitle = "Clipes, bastidores e conteúdos rápidos para parceiros e público.",
-  maxWidth = 605,
+  subtitle = "Assista no player abaixo ou abra direto no TikTok.",
 }: TikTokEmbedProps) {
+  const videoId = extractTikTokVideoId(url);
+
   return (
     <div className="overflow-hidden rounded-2xl border border-neutral-200 bg-white shadow-sm">
       <div className="p-6">
@@ -23,22 +29,48 @@ export default function TikTokEmbed({
       </div>
 
       <div className="px-6 pb-6">
-        {/* Blockquote de embed do TikTok */}
-        <blockquote
-          className="tiktok-embed"
-          cite={url}
-          data-video-id=""
-          style={{ maxWidth, minWidth: 325, margin: "0 auto" }}
-        >
-          <section>
-            <a href={url} target="_blank" rel="noopener noreferrer">
-              Assistir no TikTok
-            </a>
-          </section>
-        </blockquote>
+        {/* Se não conseguir extrair o ID, mostramos só o botão */}
+        {!videoId ? (
+          <div className="rounded-xl border border-neutral-200 p-5 text-sm text-neutral-700">
+            Não consegui identificar o vídeo do TikTok pelo link.
+            <div className="mt-3">
+              <Link
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-xl border border-neutral-200 px-4 py-2 text-sm font-medium hover:bg-neutral-50"
+              >
+                Abrir no TikTok →
+              </Link>
+            </div>
+          </div>
+        ) : (
+          <>
+            {/* Embed por iframe (mais estável que embed.js) */}
+            <div className="relative w-full overflow-hidden rounded-xl border border-neutral-200 bg-neutral-50" style={{ paddingTop: "177.78%" }}>
+              {/* 9:16 => 56.25% seria 16:9; aqui usamos ~177.78% para 9:16 */}
+              <iframe
+                className="absolute left-0 top-0 h-full w-full"
+                src={`https://www.tiktok.com/embed/v2/${videoId}`}
+                title="TikTok video player"
+                frameBorder="0"
+                allow="encrypted-media; fullscreen"
+                allowFullScreen
+              />
+            </div>
 
-        {/* Script oficial do TikTok para embutir */}
-        <Script src="https://www.tiktok.com/embed.js" strategy="afterInteractive" />
+            <div className="mt-4 flex flex-wrap items-center gap-3">
+              <Link
+                href={url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-xl border border-neutral-200 px-4 py-2 text-sm font-medium hover:bg-neutral-50"
+              >
+                Ver no TikTok →
+              </Link>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
